@@ -1,11 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import TabsBar from './TabsBar';
 
 export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
         <Text>App up App.js to start working on your app!</Text>
+        <TabsBar />
       </View>
     );
   }
