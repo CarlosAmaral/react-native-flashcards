@@ -1,17 +1,29 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, {Component} from 'react';
+import { StyleSheet, View } from 'react-native';
 import TabsBar from './TabsBar';
+import { Container, Header, Content } from 'native-base';
+import { createStackNavigator } from 'react-navigation';
+import DeckListView from './DeckListView';
 
-export default class App extends React.Component {
+export default class App extends Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text>App up App.js to start working on your app!</Text>
+      <Container>
+        <Header />
+        <AppStackNavigator />
         <TabsBar />
-      </View>
+
+      </Container>
+
     );
   }
 }
+
+const AppStackNavigator = createStackNavigator({
+  DeckListView: {
+    screen: DeckListView
+  }
+})
 
 const styles = StyleSheet.create({
   container: {
