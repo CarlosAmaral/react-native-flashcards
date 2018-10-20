@@ -4,6 +4,7 @@ import TabsBar from './TabsBar';
 import { Container, Header, Content } from 'native-base';
 import { createStackNavigator } from 'react-navigation';
 import DeckListView from './DeckListView';
+import NewDeckView from './NewDeckView';
 
 export default class App extends Component {
   render() {
@@ -22,7 +23,14 @@ export default class App extends Component {
 const AppStackNavigator = createStackNavigator({
   DeckListView: {
     screen: DeckListView
+  },
+  NewDeckView: {
+    screen: NewDeckView
+  },
+  TabsBar: {
+    screen: TabsBar
   }
+
 })
 
 const styles = StyleSheet.create({

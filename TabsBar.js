@@ -12,17 +12,24 @@ export default class TabsBar extends Component {
         };
     }
 
+    navigateToAddDeck = () => {
+        const { navigate } = this.props.navigation;
+
+        console.log(navigate, "SDSADASD");
+        //return this.props.navigation.navigate('NewDeckView');
+    }
+
     render() {
         return (
             <Footer>
                 <FooterTab>
-                    <Button>
+                    <Button onPress={this.navigateToDecks}>
                         <Icon type="MaterialCommunityIcons" size={200} name="view-module" />
-                        <Text>View Decks</Text>
+                        <Text>Decks</Text>
                     </Button>
-                    <Button>
+                    <Button onPress={this.navigateToAddDeck}>
                         <Icon type="MaterialIcons" name="add-box" size={200} />
-                        <Text>Add Decks</Text>
+                        <Text>Add Deck</Text>
                     </Button>
                 </FooterTab>
             </Footer>

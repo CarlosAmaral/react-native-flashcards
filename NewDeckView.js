@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { Container, Header, Content, Form, Item, Input } from 'native-base';
 
-export default class componentName extends Component {
+export default class NewDeckView extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -10,9 +10,19 @@ export default class componentName extends Component {
 
   render() {
     return (
-      <View>
-        <Text> textInComponent </Text>
-      </View>
+      <Container>
+        <Header />
+        <Content>
+        <Body>
+            <Title>Tell us the title of your new Deck</Title>
+          </Body>
+          <Form>
+            <Item last>
+              <Input placeholder="Deck Title" />
+            </Item>
+          </Form>
+        </Content>
+      </Container>
     );
   }
 }

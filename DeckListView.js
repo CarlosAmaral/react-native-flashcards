@@ -8,7 +8,7 @@ export default class DeckListView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      decks:[]
+      decks: []
     };
   }
   static navigationOptions = {
@@ -22,22 +22,22 @@ export default class DeckListView extends Component {
     },
   };
 
-  async componentDidMount (){
+  async componentDidMount() {
     let result = await helpers.getDecks();
-    if(result != null){
+    if (result != null) {
       result = Object.values(JSON.parse(result));
-      this.setState({decks: result});
+      this.setState({ decks: result });
     }
   }
 
   navigateToDeck = (id) => {
-
-  } 
+    ///
+  }
 
   render() {
-    
-    const {decks} = this.state;
-    
+
+    const { decks } = this.state;
+
     return (
       <Container>
         <Content>
@@ -46,11 +46,15 @@ export default class DeckListView extends Component {
               <Col key={card.id}>
                 <Card>
                   <CardItem header button onPress={(id) => this.navigateToDeck(id)}>
-                    <Text style={styles.textColor}>{card.title}</Text>
+                    <Text style={styles.textColor}>
+                      {card.title}
+                    </Text>
                   </CardItem>
                   <CardItem>
                     <Body>
-                      {/* <Text>{card.cardNum}</Text> */}
+                      <Text>
+                        {card.questions.length}
+                      </Text>
                     </Body>
                   </CardItem>
                 </Card>
@@ -63,11 +67,6 @@ export default class DeckListView extends Component {
   }
 }
 
-function getDecks(){
-  const res = helpers.getDecks();
-  console.log(res, "RESULT");
-}
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -75,11 +74,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  cardStyles:{
+  cardStyles: {
     backgroundColor: 'rgb(50, 49, 78)',
     color: 'white'
   },
-  textColor:{
+  textColor: {
     color: 'rgb(50, 49, 78)'
   }
 });
