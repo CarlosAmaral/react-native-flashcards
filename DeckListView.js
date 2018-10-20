@@ -1,52 +1,71 @@
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Card, Container, CardItem, Body, Text } from 'native-base';
-import { black } from 'ansi-colors';
-
-const deckData = [
-  {
-    title: "Deck Title 1",
-    cardNum: 4
-  }, {
-    title: "Deck Title 2",
-    cardNum: 1
-  }, {
-    title: "Deck Title 3",
-    cardNum: 8
-  }, {
-    title: "Deck Title 4",
-    cardNum: 10
-  }
-]
+import { Container, Header, Content, Card, CardItem, Text, Button, Body } from 'native-base';
+import { Col, Row, Grid } from "react-native-easy-grid";
+import * as helpers from './helpers';
 
 export default class DeckListView extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      decks:[]
     };
   }
+  static navigationOptions = {
+    title: 'Welcome to Decks Game',
+    headerStyle: {
+      backgroundColor: '#f4511e',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+  };
 
+  async componentDidMount (){
+    let result = await helpers.getDecks();
+    if(result != null){
+      result = Object.values(JSON.parse(result));
+      this.setState({decks: result});
+    }
+  }
+
+  navigateToDeck = (id) => {
+
+  } 
 
   render() {
+    
+    const {decks} = this.state;
+    
     return (
-      <Container style={styles.container}>
-        {deckData.map(deck => {
-          <Card>
-            <CardItem header>
-              <Text style={styles.textColor}>{deck.title}</Text>
-            </CardItem>
-            <CardItem>
-              <Body>
-                <Text>
-                  {deck.cardNum}
-                </Text>
-              </Body>
-            </CardItem>
-          </Card>
-        })}
+      <Container>
+        <Content>
+          <Grid>
+            {decks.map(card =>
+              <Col key={card.id}>
+                <Card>
+                  <CardItem header button onPress={(id) => this.navigateToDeck(id)}>
+                    <Text style={styles.textColor}>{card.title}</Text>
+                  </CardItem>
+                  <CardItem>
+                    <Body>
+                      {/* <Text>{card.cardNum}</Text> */}
+                    </Body>
+                  </CardItem>
+                </Card>
+              </Col>
+            )}
+          </Grid>
+        </Content>
       </Container>
     );
   }
+}
+
+function getDecks(){
+  const res = helpers.getDecks();
+  console.log(res, "RESULT");
 }
 
 const styles = StyleSheet.create({
@@ -56,7 +75,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  textColor: {
-    color: 'black'
+  cardStyles:{
+    backgroundColor: 'rgb(50, 49, 78)',
+    color: 'white'
+  },
+  textColor:{
+    color: 'rgb(50, 49, 78)'
   }
 });
