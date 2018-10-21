@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import TabsBar from './TabsBar';
 import { Container, Header, Content } from 'native-base';
-import { createStackNavigator } from 'react-navigation';
+import { createStackNavigator,createBottomTabNavigator } from 'react-navigation';
 import DeckListView from './DeckListView';
 import NewDeckView from './NewDeckView';
 
@@ -12,8 +12,7 @@ export default class App extends Component {
       <Container>
         <Header />
         <AppStackNavigator />
-        <TabsBar />
-
+        <TabsBottomNavigation/>
       </Container>
 
     );
@@ -26,11 +25,15 @@ const AppStackNavigator = createStackNavigator({
   },
   NewDeckView: {
     screen: NewDeckView
-  },
+  }
+
+
+})
+
+const TabsBottomNavigation = createBottomTabNavigator({
   TabsBar: {
     screen: TabsBar
   }
-
 })
 
 const styles = StyleSheet.create({
