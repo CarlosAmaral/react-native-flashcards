@@ -66,7 +66,7 @@ export const getDecks = async () => {
 /**
  * GET: fetch individual Deck
  */
-export const getDeck = (id) => { 
+export const getDeck = (id) => {
 
 
 }
@@ -75,8 +75,23 @@ export const getDeck = (id) => {
  * POST: save individual Deck
  * @param {*} title 
  */
-export const saveDeckTitle = (title) => { 
-  
+export const saveDeckTitle = (title) => {
+
+  try{
+
+    var obj = {};
+    obj[title] = {
+      id: guid(),
+      title: title,
+      questions: []
+    }
+    AsyncStorage.mergeItem('decks', JSON.stringify(obj))
+    return true;
+  }catch(error){
+    return false;
+  }
+ 
+
 }
 
 /**
@@ -85,5 +100,5 @@ export const saveDeckTitle = (title) => {
  * @param {*} card 
  */
 export const addCardToDeck = (title, card) => {
-  
+
 }

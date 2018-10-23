@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Container, Header, Content, Card, CardItem, Text, Button, Body } from 'native-base';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import * as helpers from './helpers';
+import { DeviceEventEmitter } from 'react-native';
 
 export default class DeckListView extends Component {
   constructor(props) {
@@ -22,7 +23,19 @@ export default class DeckListView extends Component {
     },
   };
 
+  fetchDecks = () => {
+
+  }
+
   async componentDidMount() {
+    DeviceEventEmitter.addListener("kewl", async (e) => {
+      let result = await helpers.getDecks();
+      if (result != null) {
+        result = Object.values(JSON.parse(result));
+        this.setState({ decks: result });
+      }
+    })
+    console.log("SSDSDSDSDSD");
     let result = await helpers.getDecks();
     if (result != null) {
       result = Object.values(JSON.parse(result));
@@ -37,29 +50,33 @@ export default class DeckListView extends Component {
   render() {
 
     const { decks } = this.state;
-
+    const { navigate } = this.props.navigation;
     return (
       <Container>
         <Content>
           <Grid>
+
             {decks.map(card =>
-              <Col key={card.id}>
-                <Card>
-                  <CardItem header button onPress={(id) => this.navigateToDeck(id)}>
-                    <Text style={styles.textColor}>
-                      {card.title}
-                    </Text>
-                  </CardItem>
-                  <CardItem>
-                    <Body>
-                      <Text>
-                        {card.questions.length}
+              <Row key={card.id}>
+                <Col >
+                  <Card>
+                    <CardItem header button onPress={() => navigate('NewDeckView')}>
+                      <Text style={styles.textColor}>
+                        {card.title}
                       </Text>
-                    </Body>
-                  </CardItem>
-                </Card>
-              </Col>
+                    </CardItem>
+                    <CardItem>
+                      <Body>
+                        <Text>
+                          {card.questions.length}
+                        </Text>
+                      </Body>
+                    </CardItem>
+                  </Card>
+                </Col>
+              </Row>
             )}
+
           </Grid>
         </Content>
       </Container>
