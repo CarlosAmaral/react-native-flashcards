@@ -6,27 +6,32 @@ import { Container, Header, Content } from 'native-base';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 import DeckListView from './DeckListView';
 import NewDeckView from './NewDeckView';
+import IndividualDeckView from './IndividualDeckView';
+import NewQuestionView from './NewQuestionView';
 
 export default class App extends Component {
   render() {
     return (
       <Root>
         <AppStackNavigator />
-        <TabsBar />
       </Root>
     );
   }
 }
 
+
+const TabsStackNavigator = createBottomTabNavigator({
+  "TabsBar": TabsBar,
+  "NewDeckView": NewDeckView
+})
+
 const AppStackNavigator = createStackNavigator({
   "DeckListView": DeckListView,
-  "NewDeckView": NewDeckView,
+  "IndividualDeckView": IndividualDeckView,
+  "NewQuestionView": NewQuestionView,
   "initialRouteName": DeckListView
 })
 
-const TabsStackNavigator = createBottomTabNavigator({
-  "TabsBar": TabsBar
-})
 
 const styles = StyleSheet.create({
   container: {

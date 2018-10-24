@@ -13,7 +13,7 @@ export default class TabsBar extends Component {
     }
 
     navigateToAddDeck = () => {
-        return this.props.navigation.navigate('NewDeckView');
+        console.log('newdeckview', this.props.navigation.navigate("NewDeckView"))
     }
 
     render() {

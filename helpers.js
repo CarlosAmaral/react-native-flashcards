@@ -10,6 +10,19 @@ function guid() {
   return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 }
 
+/**
+ * Check if object is empty
+ */
+
+export function isEmpty(obj) {
+  for (var prop in obj) {
+    if (obj.hasOwnProperty(prop))
+      return false;
+  }
+
+  return true;
+}
+
 const initialDeck = {
   React: {
     id: guid(),
@@ -56,7 +69,7 @@ export const getDecks = async () => {
   try {
     const value = await AsyncStorage.getItem('decks');
     if (value != null) {
-      return value;
+      return JSON.parse(value);
     }
   } catch (error) {
     console.info("GET DECKS Error", error);
@@ -66,9 +79,16 @@ export const getDecks = async () => {
 /**
  * GET: fetch individual Deck
  */
-export const getDeck = (id) => {
+export const getDeck = async (id) => {
 
-
+  try {
+    const value = await getDecks();
+    if (value != null) {
+      return Object.values(value).find(k => k.id === id);
+    }
+  } catch (error) {
+    console.info("GET DECKS Error", error);
+  }
 }
 
 /**
@@ -77,8 +97,7 @@ export const getDeck = (id) => {
  */
 export const saveDeckTitle = (title) => {
 
-  try{
-
+  try {
     var obj = {};
     obj[title] = {
       id: guid(),
@@ -87,18 +106,29 @@ export const saveDeckTitle = (title) => {
     }
     AsyncStorage.mergeItem('decks', JSON.stringify(obj))
     return true;
-  }catch(error){
+  } catch (error) {
     return false;
   }
- 
-
 }
+
+export const deleteDeck = async(id) => {
+
+  try {
+    const value = await getDecks();
+    if (value != null) {
+      
+      return Object.values(value).find(k => k.id === id);
+    }
+  } catch (error) {
+    console.info("GET DECKS Error", error);
+  }
+} 
 
 /**
  * POST: save Card to Deck
- * @param {*} title 
+ * @param {*} id 
  * @param {*} card 
  */
-export const addCardToDeck = (title, card) => {
-
+export const addCardToDeck = (id, card) => {
+  
 }
