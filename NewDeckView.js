@@ -23,7 +23,7 @@ export default class NewDeckView extends Component {
         DeviceEventEmitter.emit("deckUpdated", true);
       }
     }
-  }
+  } 
 
   render() {
     const {deckTitle} = this.state;

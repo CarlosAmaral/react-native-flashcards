@@ -20,9 +20,6 @@ export default class IndividualDeckView extends Component {
     }
   }
 
-  deleteDeck = () => { }
-
-
   render() {
 
     const { deck } = this.state;
@@ -50,20 +47,14 @@ export default class IndividualDeckView extends Component {
                 </Card>
 
               </Grid>
-              <Button block onPress={() => navigate('NewQuestionView', { id: deck.id })}>
+              <Button block onPress={() => navigate('NewQuestion', { id: deck.id })}>
                 <Text>Add Card</Text>
               </Button>
-              {/*  <Button block success onPress={() => navigate('NewQuestionView')}>>
+              <Button block success onPress={() => navigate('StartQuiz')}>>
                   <Text>Start Quiz</Text>
-                </Button> */}
-              <Button transparent danger onPress={() => this.deleteDeck}>
-                <Text>Delete Deck</Text>
-              </Button>
+                </Button> 
             </Content>
-
           )}
-
-
       </Container>
     );
   }

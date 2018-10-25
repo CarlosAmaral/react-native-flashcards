@@ -55,7 +55,7 @@ export default class DeckListView extends Component {
 
     const { decks } = this.state;
     const { navigate } = this.props.navigation;
-    console.log("navigate", navigate('NewDeckView'));
+    console.log("IndividualDeckView BOOLEAN", navigate('IndividualDeck'));
     return (
       <Container>
         <Content>
@@ -64,7 +64,7 @@ export default class DeckListView extends Component {
               <Row key={card.id}>
                 <Col >
                   <Card>
-                    <CardItem header button onPress={() => navigate('IndividualDeckView', { id: card.id })}>
+                    <CardItem header button onPress={() => navigate('IndividualDeck', { id: card.id })}>
                       <Text style={styles.textColor}>
                         {card.title}
                       </Text>

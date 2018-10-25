@@ -111,24 +111,11 @@ export const saveDeckTitle = (title) => {
   }
 }
 
-export const deleteDeck = async(id) => {
-
-  try {
-    const value = await getDecks();
-    if (value != null) {
-      
-      return Object.values(value).find(k => k.id === id);
-    }
-  } catch (error) {
-    console.info("GET DECKS Error", error);
-  }
-} 
-
 /**
  * POST: save Card to Deck
  * @param {*} id 
  * @param {*} card 
  */
 export const addCardToDeck = (id, card) => {
-  
+
 }

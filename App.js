@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import TabsBar from './TabsBar';
-import { Root } from "native-base";
+import { Root, Icon } from "native-base";
 import { Container, Header, Content } from 'native-base';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 import DeckListView from './DeckListView';
@@ -11,6 +11,7 @@ import NewQuestionView from './NewQuestionView';
 
 export default class App extends Component {
   render() {
+    console.log("kewl");
     return (
       <Root>
         <AppStackNavigator />
@@ -19,18 +20,38 @@ export default class App extends Component {
   }
 }
 
+const Tabs = createBottomTabNavigator({
+  DeckList: {
+    screen: DeckListView,
+    navigationOptions: {
+      tabBarIcon: () => <Icon type="MaterialCommunityIcons" size={200} name="view-module" />,
+      tabBarLabel: 'Decks'
+    }
+  },
+  NewDeck: {
+    screen: NewDeckView,
+    navigationOptions: {
+      tabBarIcon: () => <Icon type="MaterialIcons" name="add-box" size={200} />,
+      tabBarLabel: 'Add Deck'
+    }
+  }
+}, {
+  initialRouteName: 'DeckList',
 
-const TabsStackNavigator = createBottomTabNavigator({
-  "TabsBar": TabsBar,
-  "NewDeckView": NewDeckView
-})
+  }
+);
 
 const AppStackNavigator = createStackNavigator({
-  "DeckListView": DeckListView,
-  "IndividualDeckView": IndividualDeckView,
-  "NewQuestionView": NewQuestionView,
-  "initialRouteName": DeckListView
-})
+  Home: {
+    screen: Tabs
+  },
+  IndividualDeck: {
+    screen: IndividualDeckView
+  },
+  NewQuestion: {
+    screen: NewQuestionView,
+  }
+});
 
 
 const styles = StyleSheet.create({
