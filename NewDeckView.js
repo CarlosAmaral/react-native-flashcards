@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Container, Header, Content, Form, Item, Input, Body, Toast, Text, Title, Button } from 'native-base';
+import { Container, Header, Content, Form, Item, Input, Body, Toast, Text, Title, H1, Button } from 'native-base';
 import * as helpers from './helpers';
-import { DeviceEventEmitter } from 'react-native';
+import { DeviceEventEmitter, StyleSheet } from 'react-native';
 
 export default class NewDeckView extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -11,31 +12,32 @@ export default class NewDeckView extends Component {
     };
   }
 
-  handleSubmit = () => {
+  handleSubmit = async() => {
 
     const { deckTitle } = this.state;
-    console.log("dentro de else")
-    if (deckTitle == "" || deckTitle == undefined || deckTitle == null) {
+    const { navigate } = this.props.navigation;
+    if (deckTitle == "") {
       return Toast.show({ text: 'Please type a Deck Title!', buttonText: 'Okay' })
     } else {
-      const isDeckSaved = helpers.saveDeckTitle(deckTitle);
+      const isDeckSaved = await helpers.saveDeckTitle(deckTitle);
       if (isDeckSaved) {
+        console.log(isDeckSaved, "IS DECK SAVED")
         DeviceEventEmitter.emit("deckUpdated", true);
+        this.setState({deckTitle:""})
+        return navigate('IndividualDeck', { id: isDeckSaved.id })
       }
     }
-  } 
+  }
 
   render() {
-    const {deckTitle} = this.state;
+    const { deckTitle } = this.state;
     return (
-      <Container>
-        <Content>
-          <Body>
-            <Title>Tell us the title of your new Deck</Title>
-          </Body>
+      <Container >
+        <Content contentContainerStyle={styles.container}>
+          <H1 style={styles.titleStyle}>Tell us the title of your new Deck</H1>
           <Form>
             <Item last>
-              <Input placeholder="Deck Title" onChangeText={(el) => this.setState({ deckTitle: el })} />
+              <Input placeholder="Deck Title" value={deckTitle} onChangeText={(el) => this.setState({ deckTitle: el })} />
             </Item>
             <Button primary disabled={deckTitle == "" ? true : false} onPress={this.handleSubmit}>
               <Text>Submit</Text>
@@ -46,3 +48,24 @@ export default class NewDeckView extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  titleStyle: {
+    paddingLeft:40,
+    paddingRight:40,
+    textAlign:'center'
+  },
+  container: {
+    flex: 1,
+    //backgroundColor: 'rgb(50, 49, 78)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cardStyles: {
+    backgroundColor: 'rgb(50, 49, 78) !important',
+    color: 'white'
+  },
+  textColor: {
+    color: 'rgb(50, 49, 78)'
+  }
+});

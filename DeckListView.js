@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Container, Header, Content, Card, CardItem, Text, Button, Body } from 'native-base';
+import { StyleSheet, Animated  } from 'react-native';
+import { Container, Content, Header, Left, Right, Card, CardItem, Text, Title, Button, Body } from 'native-base';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import * as helpers from './helpers';
 import TabsBar from './TabsBar';
@@ -9,22 +9,21 @@ import { createBottomTabNavigator } from 'react-navigation';
 import NewDeckView from './NewDeckView';
 
 export default class DeckListView extends Component {
+
+  static navigationOptions = ({ navigation }) => ({
+    title: 'Kewl',
+    headerTitleStyle: { textAlign: 'center', alignSelf: 'center' }
+  });
+
+
   constructor(props) {
     super(props);
     this.state = {
-      decks: []
+      decks: [],
+      fadeAnim: new Animated.Value(0),
     };
+
   }
-  static navigationOptions = {
-    title: 'Welcome to Decks Game',
-    headerStyle: {
-      backgroundColor: '#f4511e',
-    },
-    headerTintColor: '#fff',
-    headerTitleStyle: {
-      fontWeight: 'bold',
-    },
-  };
 
   fetchDecks = () => {
 
@@ -47,8 +46,14 @@ export default class DeckListView extends Component {
     }
   }
 
-  navigateToDeck = (id) => {
-    ///
+  NavIndividualDeck = (id) => {
+    const { navigate } = this.props.navigation;
+   /*  Animated.timing(this.state.xPosition, {
+      toValue: 100,
+      easing: Easing.back(),
+      duration: 1000,
+    }).start(); */
+    return navigate('IndividualDeck', { id: id })
   }
 
   render() {
@@ -62,9 +67,9 @@ export default class DeckListView extends Component {
           <Grid>
             {decks.map(card =>
               <Row key={card.id}>
-                <Col >
+                <Col>
                   <Card>
-                    <CardItem header button onPress={() => navigate('IndividualDeck', { id: card.id })}>
+                    <CardItem header button onPress={(id) => this.NavIndividualDeck(card.id)}>
                       <Text style={styles.textColor}>
                         {card.title}
                       </Text>
@@ -92,12 +97,12 @@ export default class DeckListView extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'rgb(50, 49, 78)',
     alignItems: 'center',
     justifyContent: 'center',
   },
   cardStyles: {
-    backgroundColor: 'rgb(50, 49, 78)',
+    backgroundColor: 'rgb(50, 49, 78) !important',
     color: 'white'
   },
   textColor: {

@@ -4,6 +4,11 @@ import { Container, Header, Card, Body, CardItem, Content, Button, Grid, H1, H2,
 import * as helpers from './helpers';
 
 export default class IndividualDeckView extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    //title: 'Kewl',
+    headerTitleStyle: { textAlign: 'center', alignSelf: 'center' }
+  });
+
   constructor(props) {
     super(props);
     this.state = {
@@ -29,7 +34,7 @@ export default class IndividualDeckView extends Component {
         {helpers.isEmpty(deck) ? (
           <Text>Loading</Text>
         ) : (
-            <Content>
+            <Content contentContainerStyle={styles.container}>
               <Grid>
                 <Card key={deck.id} style={styles.container}>
                   <CardItem header>
@@ -47,10 +52,11 @@ export default class IndividualDeckView extends Component {
                 </Card>
 
               </Grid>
-              <Button block onPress={() => navigate('NewQuestion', { id: deck.id })}>
+              
+              <Button onPress={() => navigate('NewQuestion', { id: deck.id })}>
                 <Text>Add Card</Text>
               </Button>
-              <Button block success onPress={() => navigate('StartQuiz')}>>
+              <Button success onPress={() => navigate('StartQuiz')}>>
                   <Text>Start Quiz</Text>
                 </Button> 
             </Content>
@@ -59,12 +65,22 @@ export default class IndividualDeckView extends Component {
     );
   }
 }
-
 const styles = StyleSheet.create({
+  titleStyle: {
+    paddingLeft:40,
+    paddingRight:40,
+    textAlign:'center'
+  },
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
+    //backgroundColor: 'rgb(50, 49, 78)',
     alignItems: 'center',
     justifyContent: 'center',
   },
+  cardStyles: {
+    backgroundColor: 'rgb(50, 49, 78) !important',
+    color: 'white'
+  },
+  textColor: {
+    color: 'rgb(50, 49, 78)'
+  }
 });

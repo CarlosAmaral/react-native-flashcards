@@ -95,7 +95,7 @@ export const getDeck = async (id) => {
  * POST: save individual Deck
  * @param {*} title 
  */
-export const saveDeckTitle = (title) => {
+export const saveDeckTitle = async (title) => {
 
   try {
     var obj = {};
@@ -105,17 +105,30 @@ export const saveDeckTitle = (title) => {
       questions: []
     }
     AsyncStorage.mergeItem('decks', JSON.stringify(obj))
-    return true;
+    const value = await getDecks();
+    if (value != null) {
+      return Object.values(value).find(k => k.id === obj[title].id);
+    }
   } catch (error) {
-    return false;
+    return error;
   }
 }
 
 /**
- * POST: save Card to Deck
+ * POST: save Card to Deck, takes an id and an object with question and answer as keys
  * @param {*} id 
  * @param {*} card 
  */
-export const addCardToDeck = (id, card) => {
+export const addCardToDeck = async (id, card) => {
+  try {
+    const value = await getDecks();
+    if (value != null) {
+      Object.values(value).find(deck => deck.id === id).questions.push(card)
+
+      AsyncStorage.setItem('decks', JSON.stringify(value));
+    }
+  } catch (error) {
+    return null;
+  }
 
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, DeviceEventEmitter } from 'react-native';
 import { Container, Input, Card, Title, Body, CardItem, Content,Toast, Form, Item, Button, Grid, H1, H2, H3, Text } from 'native-base';
 import * as helpers from './helpers';
 
@@ -25,9 +25,9 @@ export default class NewQuestionView extends Component {
         "answer": answer
       }
       const isCardSaved = helpers.addCardToDeck(navigation.getParam('id'), payload);
-      if (isCardSaved) {
+      /* if (isCardSaved) {
         DeviceEventEmitter.emit("deckUpdated", true);
-      }
+      } */
     }
     
 
