@@ -35,12 +35,12 @@ export default class NewDeckView extends Component {
       <Container >
         <Content contentContainerStyle={styles.container}>
           <H1 style={styles.titleStyle}>Tell us the title of your new Deck</H1>
-          <Form>
+          <Form style={styles.formStyle}>
             <Item last>
               <Input placeholder="Deck Title" value={deckTitle} onChangeText={(el) => this.setState({ deckTitle: el })} />
             </Item>
-            <Button primary disabled={deckTitle == "" ? true : false} onPress={this.handleSubmit}>
-              <Text>Submit</Text>
+            <Button style={styles.buttonStyle} primary disabled={deckTitle == "" ? true : false} onPress={this.handleSubmit}>
+              <Text>Create Deck</Text>
             </Button>
           </Form>
         </Content>
@@ -51,15 +51,23 @@ export default class NewDeckView extends Component {
 
 const styles = StyleSheet.create({
   titleStyle: {
-    paddingLeft:40,
-    paddingRight:40,
-    textAlign:'center'
+    paddingLeft: 40,
+    paddingRight: 40,
+    textAlign: 'center'
+  },
+  formStyle:{
+    width: 400, 
+    textAlign: 'center'
+  },
+  buttonStyle: {
+    alignSelf: 'center',
+    marginTop: 20
   },
   container: {
     flex: 1,
     //backgroundColor: 'rgb(50, 49, 78)',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   cardStyles: {
     backgroundColor: 'rgb(50, 49, 78) !important',

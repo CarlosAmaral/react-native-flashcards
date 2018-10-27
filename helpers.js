@@ -23,7 +23,7 @@ export function isEmpty(obj) {
   return true;
 }
 
-const initialDeck = {
+const initialDecks = {
   React: {
     id: guid(),
     title: 'React',
@@ -50,12 +50,19 @@ const initialDeck = {
   }
 };
 
+//
+
+
+const userObj = {
+  questions:[]
+}
+
 /**
  * Populates Async Storage as the app is initialized
  */
 (async () => {
   try {
-    await AsyncStorage.setItem('decks', JSON.stringify(initialDeck));
+    await AsyncStorage.setItem('decks', JSON.stringify(initialDecks));
   } catch (error) {
     console.info("error", error);
   }
@@ -124,11 +131,21 @@ export const addCardToDeck = async (id, card) => {
     const value = await getDecks();
     if (value != null) {
       Object.values(value).find(deck => deck.id === id).questions.push(card)
-
       AsyncStorage.setItem('decks', JSON.stringify(value));
     }
   } catch (error) {
     return null;
   }
+}
 
+export const addQuizAnswerToUser = (id) => {
+  try {
+    const value = await getDecks();
+    if (value != null) {
+      Object.values(value).find(deck => deck.id === id).questions.push(card)
+      AsyncStorage.setItem('decks', JSON.stringify(value));
+    }
+  } catch (error) {
+    return null;
+  }
 }

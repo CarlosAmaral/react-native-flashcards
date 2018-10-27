@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, DeviceEventEmitter } from 'react-native';
 import { Container, Header, Card, Body, CardItem, Content, Button, Grid, H1, H2, H3, Text } from 'native-base';
 import * as helpers from './helpers';
 
@@ -15,14 +15,21 @@ export default class IndividualDeckView extends Component {
       deck: {}
     };
   }
-  async componentDidMount() {
+
+  _fetchDeck = async() => {
     const { navigation } = this.props;
     const deck = await helpers.getDeck(navigation.getParam('id'))
 
     if (deck != {}) {
-      console.log("invidivual", deck);
-      this.setState({ deck })
+      return this.setState({ deck })
     }
+  }
+
+  componentDidMount() {
+    DeviceEventEmitter.addListener("cardAdded", (e) => {
+      return this._fetchDeck();
+    })
+    return this._fetchDeck();
   }
 
   render() {
@@ -35,28 +42,22 @@ export default class IndividualDeckView extends Component {
           <Text>Loading</Text>
         ) : (
             <Content contentContainerStyle={styles.container}>
-              <Grid>
-                <Card key={deck.id} style={styles.container}>
+                <Card key={deck.id} style={styles.cardStyle}>
                   <CardItem header>
                     <Text style={styles.textColor}>
                       {deck.title}
                     </Text>
                   </CardItem>
                   <CardItem>
-                    <Body>
                       <Text>
-                        {deck.questions.length}
+                        {deck.questions.length} cards
                       </Text>
-                    </Body>
                   </CardItem>
                 </Card>
-
-              </Grid>
-              
-              <Button onPress={() => navigate('NewQuestion', { id: deck.id })}>
+              <Button style={styles.buttonStyle} onPress={() => navigate('NewQuestion', { id: deck.id })}>
                 <Text>Add Card</Text>
               </Button>
-              <Button success onPress={() => navigate('StartQuiz')}>>
+              <Button style={styles.buttonStyle} success onPress={() => navigate('StartQuiz')}>>
                   <Text>Start Quiz</Text>
                 </Button> 
             </Content>
@@ -67,14 +68,26 @@ export default class IndividualDeckView extends Component {
 }
 const styles = StyleSheet.create({
   titleStyle: {
-    paddingLeft:40,
-    paddingRight:40,
-    textAlign:'center'
+    paddingLeft: 40,
+    paddingRight: 40,
+    textAlign: 'center'
   },
-  container: {
-    //backgroundColor: 'rgb(50, 49, 78)',
+  cardStyle:{
     alignItems: 'center',
     justifyContent: 'center',
+    width: 200,
+    height:150, 
+    textAlign: 'center'
+  },
+  buttonStyle: {
+    alignSelf: 'center',
+    marginTop: 20
+  },
+  container: {
+    flex: 1,
+    //backgroundColor: 'rgb(50, 49, 78)',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   cardStyles: {
     backgroundColor: 'rgb(50, 49, 78) !important',
