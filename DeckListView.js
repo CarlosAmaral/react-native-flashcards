@@ -24,7 +24,9 @@ export default class DeckListView extends Component {
     };
 
   }
-
+  /**
+   * Fetch All Decks
+   */
   _fetchDecks = async () => {
     let result = await helpers.getDecks();
     if (result != null) {
@@ -33,10 +35,10 @@ export default class DeckListView extends Component {
     }
   }
 
-  // REFACTOR FUNCTION BELOW
   componentDidMount() {
     DeviceEventEmitter.addListener("deckUpdated", (e) => {
       return this._fetchDecks();
+      
     })
     return this._fetchDecks();
   }
@@ -54,7 +56,6 @@ export default class DeckListView extends Component {
   render() {
 
     const { decks } = this.state;
-    const { navigate } = this.props.navigation;
     return (
       <Container>
         <Content>

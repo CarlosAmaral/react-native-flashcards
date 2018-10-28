@@ -8,6 +8,7 @@ import DeckListView from './DeckListView';
 import NewDeckView from './NewDeckView';
 import IndividualDeckView from './IndividualDeckView';
 import NewQuestionView from './NewQuestionView';
+import QuizView from './QuizView';
 
 const Tabs = createBottomTabNavigator({
   DeckList: {
@@ -39,6 +40,9 @@ const AppStackNavigator = createStackNavigator({
   },
   NewQuestion: {
     screen: NewQuestionView,
+  },
+  Quiz: {
+    screen: QuizView,
   },
 
 }, {

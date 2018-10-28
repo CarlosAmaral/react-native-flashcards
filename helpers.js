@@ -50,23 +50,20 @@ const initialDecks = {
   }
 };
 
-//
+// User object collection to keep track of the answered questions
+//const userObj = {}
 
-
-const userObj = {
-  questions:[]
-}
-
-/**
- * Populates Async Storage as the app is initialized
- */
-(async () => {
-  try {
-    await AsyncStorage.setItem('decks', JSON.stringify(initialDecks));
-  } catch (error) {
-    console.info("error", error);
-  }
-})()
+  /**
+   * Populates Async Storage as the app is initialized
+   */
+  (async () => {
+    try {
+      await AsyncStorage.setItem('decks', JSON.stringify(initialDecks));
+      //await AsyncStorage.setItem('user', JSON.stringify(userObj));
+    } catch (error) {
+      console.info("error", error);
+    }
+  })()
 
 
 /**
@@ -138,12 +135,20 @@ export const addCardToDeck = async (id, card) => {
   }
 }
 
-export const addQuizAnswerToUser = (id) => {
+export const addQuizAnswerToUserCollection = async (deckId, answer) => {
   try {
     const value = await getDecks();
     if (value != null) {
-      Object.values(value).find(deck => deck.id === id).questions.push(card)
-      AsyncStorage.setItem('decks', JSON.stringify(value));
+
+      // correct: number of flagged questions as correct
+      // wrong: number of flagged questions as wrong
+      const obj = {
+        id: deckId,
+        // correct:
+
+      }
+      Object.values(value).find(deck => deck.id === deckId).questions.push(card)
+      AsyncStorage.mergeItem('user', JSON.stringify(value));
     }
   } catch (error) {
     return null;

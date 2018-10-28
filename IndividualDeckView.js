@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, DeviceEventEmitter } from 'react-native';
-import { Container, Header, Card, Body, CardItem, Content, Button, Grid, H1, H2, H3, Text } from 'native-base';
+import { StyleSheet, DeviceEventEmitter } from 'react-native';
+import { Container, Card, CardItem, Content, Button, Text } from 'native-base';
 import * as helpers from './helpers';
 
 export default class IndividualDeckView extends Component {
@@ -57,7 +57,7 @@ export default class IndividualDeckView extends Component {
               <Button style={styles.buttonStyle} onPress={() => navigate('NewQuestion', { id: deck.id })}>
                 <Text>Add Card</Text>
               </Button>
-              <Button style={styles.buttonStyle} success onPress={() => navigate('StartQuiz')}>>
+              <Button style={styles.buttonStyle} success onPress={() => navigate('Quiz', { id: deck.id })}>>
                   <Text>Start Quiz</Text>
                 </Button> 
             </Content>
