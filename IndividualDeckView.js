@@ -6,7 +6,7 @@ import * as helpers from './helpers';
 export default class IndividualDeckView extends Component {
   static navigationOptions = ({ navigation }) => ({
     //title: 'Kewl',
-    headerTitleStyle: { textAlign: 'center', alignSelf: 'center' }
+    //headerTitleStyle: { textAlign: 'center', alignSelf: 'center' }
   });
 
   constructor(props) {
@@ -76,8 +76,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: 200,
-    height:150, 
-    textAlign: 'center'
+    height:150
   },
   buttonStyle: {
     alignSelf: 'center',

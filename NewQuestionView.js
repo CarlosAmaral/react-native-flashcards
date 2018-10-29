@@ -28,6 +28,7 @@ export default class NewQuestionView extends Component {
       if (isCardSaved) {
         DeviceEventEmitter.emit("deckUpdated", true);
         DeviceEventEmitter.emit("cardAdded", true);
+        navigation.goBack();
       }
     }
   }
@@ -66,7 +67,8 @@ const styles = StyleSheet.create({
   },
   formStyle:{
     width: 400, 
-    textAlign: 'center'
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   buttonStyle: {
     alignSelf: 'center',

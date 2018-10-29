@@ -10,11 +10,6 @@ import NewDeckView from './NewDeckView';
 
 export default class DeckListView extends Component {
 
-  static navigationOptions = ({ navigation }) => ({
-    title: 'Kewl',
-    headerTitleStyle: { textAlign: 'center', alignSelf: 'center' }
-  });
-
 
   constructor(props) {
     super(props);

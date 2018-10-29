@@ -144,6 +144,7 @@ export const addCardToDeck = async (id, card) => {
 export const addQuizAnswerToUserCollection = async (payload) => {
   try {
     await AsyncStorage.mergeItem('user', JSON.stringify(payload));
+    clearLocalNotifications().then(setLocalNotification());
   } catch (error) {
     return null;
   }
@@ -155,63 +156,62 @@ export const addQuizAnswerToUserCollection = async (payload) => {
 |--------------------------------------------------
 */
 
-export function clearLocalNotifications() {
+function clearLocalNotifications() {
   return AsyncStorage.removeItem('quizNotification')
     .then(Notification.cancelAllScheduledNotificationsAsync())
-
 }
 
 function createNotification() {
   return {
     title: 'Quiz Time!',
-    body: 'You forgot to complete at least one quiz today :)',
+    body: 'You forgot to complete at least one Quiz today :)',
     ios: { sound: true, priority: 'high', sticky: false, vibrate: true },
     android: { sound: true, priority: 'high', sticky: false, vibrate: true },
   }
 }
 
 export function setLocalNotification() {
-  console.log("HIT SET NOTIFICATION")
-  AsyncStorage.removeItem('quizNotification')
   AsyncStorage.getItem('quizNotification')
     .then(JSON.parse)
     .then(res => {
       if (res === null) {
         Permissions.askAsync(Permissions.NOTIFICATIONS)
-          .then(async({ status }) => {
-            console.log(status, "STATUS")
+          .then(async ({ status }) => {
             if (status === 'granted') {
 
               Notifications.cancelAllScheduledNotificationsAsync();
 
-              console.log("GRANTED???")
+              const oneDay = 24 * 60 * 60 * 1000;
+              const rightNow = new Date();
+
               const userCollection = await AsyncStorage.getItem('user');
-              
-              let getTimestamp = JSON.parse(userCollection)
-              let checkTime = getTimestamp.timestamp
-              console.log(checkTime, "CHECK TIME");
-              let tomorrow = new Date()
-              tomorrow.setDate(tomorrow.getDate())
-              tomorrow.setHours(18)
-              tomorrow.setMinutes(55)
-
-              Notifications.scheduleLocalNotificationAsync(
-                createNotification(),
-                {
-                  time: tomorrow,
-                  repeat: 'day'
+              if (userCollection != null) {
+                const getTimestamp = JSON.parse(userCollection)
+                if (Math.round(Math.abs((rightNow.getTime() - getTimestamp.timestamp.getTime()) / (oneDay))) > 2) {
+                  sendNotification()
                 }
-              )
-              
-
-              console.log("KEWL QUIZ???")
-
-              AsyncStorage.setItem('quizNotification', JSON.stringify(true));
-              console.log("KEWL QUIZ???")
-
+              } else {
+                sendNotification()
+              }
             }
           })
       }
     })
 
+}
+
+function sendNotification() {
+  let today = new Date()
+  today.setDate(today.getDate())
+  today.setHours(18)
+  today.setMinutes(0)
+
+  Notifications.scheduleLocalNotificationAsync(
+    createNotification(),
+    {
+      time: today,
+      repeat: 'day'
+    }
+  )
+  AsyncStorage.setItem('quizNotification', JSON.stringify(true));
 }
