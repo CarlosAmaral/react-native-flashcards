@@ -1,5 +1,5 @@
-import { React } from 'react';
 import { AsyncStorage } from "react-native";
+import { Notifications, Permissions } from 'expo';
 
 function guid() {
   function s4() {
@@ -53,17 +53,19 @@ const initialDecks = {
 // User object collection to keep track of the answered questions
 //const userObj = {}
 
-  /**
-   * Populates Async Storage as the app is initialized
-   */
-  (async () => {
-    try {
-      await AsyncStorage.setItem('decks', JSON.stringify(initialDecks));
-      //await AsyncStorage.setItem('user', JSON.stringify(userObj));
-    } catch (error) {
-      console.info("error", error);
-    }
-  })()
+/**
+ * Populates Async Storage as the app is initialized
+ */
+(async () => {
+  try {
+
+    //console.log(result, "USER COLLEC")
+
+    await AsyncStorage.setItem('decks', JSON.stringify(initialDecks));
+  } catch (error) {
+    console.info("error", error);
+  }
+})()
 
 
 /**
@@ -135,22 +137,81 @@ export const addCardToDeck = async (id, card) => {
   }
 }
 
-export const addQuizAnswerToUserCollection = async (deckId, answer) => {
+/**
+ * Add latest quiz info to the User item of Async Storage
+ * @param {*} payload 
+ */
+export const addQuizAnswerToUserCollection = async (payload) => {
   try {
-    const value = await getDecks();
-    if (value != null) {
-
-      // correct: number of flagged questions as correct
-      // wrong: number of flagged questions as wrong
-      const obj = {
-        id: deckId,
-        // correct:
-
-      }
-      Object.values(value).find(deck => deck.id === deckId).questions.push(card)
-      AsyncStorage.mergeItem('user', JSON.stringify(value));
-    }
+    await AsyncStorage.mergeItem('user', JSON.stringify(payload));
   } catch (error) {
     return null;
   }
+}
+
+/**
+|--------------------------------------------------
+| Local Notifications
+|--------------------------------------------------
+*/
+
+export function clearLocalNotifications() {
+  return AsyncStorage.removeItem('quizNotification')
+    .then(Notification.cancelAllScheduledNotificationsAsync())
+
+}
+
+function createNotification() {
+  return {
+    title: 'Quiz Time!',
+    body: 'You forgot to complete at least one quiz today :)',
+    ios: { sound: true, priority: 'high', sticky: false, vibrate: true },
+    android: { sound: true, priority: 'high', sticky: false, vibrate: true },
+  }
+}
+
+export function setLocalNotification() {
+  console.log("HIT SET NOTIFICATION")
+  AsyncStorage.removeItem('quizNotification')
+  AsyncStorage.getItem('quizNotification')
+    .then(JSON.parse)
+    .then(res => {
+      if (res === null) {
+        Permissions.askAsync(Permissions.NOTIFICATIONS)
+          .then(async({ status }) => {
+            console.log(status, "STATUS")
+            if (status === 'granted') {
+
+              Notifications.cancelAllScheduledNotificationsAsync();
+
+              console.log("GRANTED???")
+              const userCollection = await AsyncStorage.getItem('user');
+              
+              let getTimestamp = JSON.parse(userCollection)
+              let checkTime = getTimestamp.timestamp
+              console.log(checkTime, "CHECK TIME");
+              let tomorrow = new Date()
+              tomorrow.setDate(tomorrow.getDate())
+              tomorrow.setHours(18)
+              tomorrow.setMinutes(55)
+
+              Notifications.scheduleLocalNotificationAsync(
+                createNotification(),
+                {
+                  time: tomorrow,
+                  repeat: 'day'
+                }
+              )
+              
+
+              console.log("KEWL QUIZ???")
+
+              AsyncStorage.setItem('quizNotification', JSON.stringify(true));
+              console.log("KEWL QUIZ???")
+
+            }
+          })
+      }
+    })
+
 }

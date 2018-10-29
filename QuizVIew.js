@@ -12,7 +12,7 @@ export default class QuizView extends Component {
       questions: [],
       showAnswer: false,
       endOfQuiz: false,
-      correctQuestionsNum:0
+      correctQuestionsCounter: 0
     };
   }
 
@@ -36,35 +36,36 @@ export default class QuizView extends Component {
   }
 
   setCurrentQuestion() {
-    const { currentQuestionIndex, questions } = this.state;
+    const { currentQuestionIndex, questions, correctQuestionsCounter } = this.state;
+    const { navigation } = this.props;
     if (questions.length > 0 && (currentQuestionIndex + 1 <= questions.length)) {
       this.setState({ currentQuestion: questions[currentQuestionIndex] });
     } else {
 
       const deckId = navigation.getParam('id');
-      
+
       const payload = {
-           id: deckId,
-           correct: 0
+        id: deckId,
+        correct: correctQuestionsCounter,
+        timestamp: new Date()
       }
       helpers.addQuizAnswerToUserCollection(payload)
-      this.setState({ endOfQuiz: true });
+      return this.setState({ endOfQuiz: true });
     }
   }
 
-  restartQuiz = () => {
-    this.setState(this.initialState);
-    return this._fetchQuestions();
-  }
+  restartQuiz = () => this.setState(this.initialState, () => this._fetchQuestions());
 
   nextCard = (chosen) => {
-    const { currentQuestionIndex } = this.state;
-
+    const { currentQuestionIndex, correctQuestionsCounter } = this.state;
+    if (chosen === 'correct') {
+      this.setState({ correctQuestionsCounter: correctQuestionsCounter + 1 })
+    }
     this.setState({ currentQuestionIndex: currentQuestionIndex + 1, showAnswer: false }, () => this.setCurrentQuestion());
   }
 
   render() {
-    const { questions, showAnswer, currentQuestion, endOfQuiz, currentQuestionIndex } = this.state;
+    const { questions, showAnswer, currentQuestion, endOfQuiz, currentQuestionIndex, correctQuestionsCounter } = this.state;
     const { goBack } = this.props.navigation;
     return (
       <Container>
@@ -102,8 +103,7 @@ export default class QuizView extends Component {
                   <Body style={styles.container}>
                     <H3>Congratulations, the quiz has ended!</H3>
 
-                    <Title>Correct answers</Title>
-                    <Title>Wrong answers</Title>
+                    <Title>Correct answers: {correctQuestionsCounter}</Title>
 
                     <Button success style={styles.buttonStyle} onPress={() => this.restartQuiz()}>
                       <Text>Restart Quiz</Text>

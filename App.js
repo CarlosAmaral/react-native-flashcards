@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, StatusBar } from 'react-native';
-import TabsBar from './TabsBar';
 import { Root, Icon } from "native-base";
-import { Container, Header, Content, Body, Title, Text } from 'native-base';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 import DeckListView from './DeckListView';
 import NewDeckView from './NewDeckView';
 import IndividualDeckView from './IndividualDeckView';
 import NewQuestionView from './NewQuestionView';
 import QuizView from './QuizView';
+import * as helpers from './helpers';
 
 const Tabs = createBottomTabNavigator({
   DeckList: {
@@ -44,8 +42,8 @@ const AppStackNavigator = createStackNavigator({
   Quiz: {
     screen: QuizView,
   },
-
-}, {
+},
+  {
     initialRouteName: 'Home',
   }
 );
@@ -55,11 +53,10 @@ const AppStackNavigator = createStackNavigator({
 export default class App extends Component {
 
   componentDidMount() {
-    //clearLocalNotifications().then(setLocalNotification());
+    helpers.setLocalNotification();
   }
 
   render() {
-    console.log("kewl");
     return (
       <Root>
         <AppStackNavigator />
@@ -67,15 +64,3 @@ export default class App extends Component {
     );
   }
 }
-
-
-/* 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
- */
