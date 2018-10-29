@@ -27,6 +27,7 @@ export default class IndividualDeckView extends Component {
 
   componentDidMount() {
     DeviceEventEmitter.addListener("cardAdded", (e) => {
+      console.log("CARD UPDATED")
       return this._fetchDeck();
     })
     return this._fetchDeck();

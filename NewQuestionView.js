@@ -12,7 +12,7 @@ export default class NewQuestionView extends Component {
     };
   }
 
-  handleSubmit = () => {
+  handleSubmit = async() => {
 
     const { question, answer } = this.state;
     const { navigation } = this.props;
@@ -24,7 +24,7 @@ export default class NewQuestionView extends Component {
         "question": question,
         "answer": answer
       }
-      const isCardSaved = helpers.addCardToDeck(navigation.getParam('id'), payload);
+      const isCardSaved = await helpers.addCardToDeck(navigation.getParam('id'), payload);
       if (isCardSaved) {
         DeviceEventEmitter.emit("deckUpdated", true);
         DeviceEventEmitter.emit("cardAdded", true);
@@ -65,8 +65,8 @@ const styles = StyleSheet.create({
     paddingRight: 40,
     textAlign: 'center'
   },
-  formStyle:{
-    width: 400, 
+  formStyle: {
+    width: 400,
     alignItems: 'center',
     justifyContent: 'center'
   },

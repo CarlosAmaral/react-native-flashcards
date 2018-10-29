@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
-import { StyleSheet, Animated } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Container, Content, Header, Left, Right, Card, CardItem, Text, Title, Button, Body } from 'native-base';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import * as helpers from './helpers';
-import TabsBar from './TabsBar';
 import { DeviceEventEmitter } from 'react-native';
-import { createBottomTabNavigator } from 'react-navigation';
-import NewDeckView from './NewDeckView';
 
 export default class DeckListView extends Component {
 
@@ -15,7 +12,7 @@ export default class DeckListView extends Component {
     super(props);
     this.state = {
       decks: [],
-      fadeAnim: new Animated.Value(0),
+      animation: false,
     };
 
   }
@@ -32,27 +29,31 @@ export default class DeckListView extends Component {
 
   componentDidMount() {
     DeviceEventEmitter.addListener("deckUpdated", (e) => {
+      console.log("DECK UPDATED")
       return this._fetchDecks();
-      
+
     })
     return this._fetchDecks();
   }
 
   NavIndividualDeck = (id) => {
     const { navigate } = this.props.navigation;
-    /*  Animated.timing(this.state.xPosition, {
-       toValue: 100,
-       easing: Easing.back(),
-       duration: 1000,
-     }).start(); */
-    return navigate('IndividualDeck', { id: id })
+
+    setTimeout(() => {
+      this.setState({ animation: true })
+    }, 1000)
+    this.setState({ animation: false })
+
+    setTimeout(() => {
+      navigate('IndividualDeck', { id: id })
+    }, 1000)
   }
 
   render() {
 
     const { decks } = this.state;
     return (
-      <Container>
+      <Container style={this.state.animation ? { backgroundColor: 'rgb(50, 49, 78)' } : { backgroundColor: '#000' }}>
         <Content>
           <Grid>
             {decks.map(card =>

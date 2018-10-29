@@ -58,9 +58,6 @@ const initialDecks = {
  */
 (async () => {
   try {
-
-    //console.log(result, "USER COLLEC")
-
     await AsyncStorage.setItem('decks', JSON.stringify(initialDecks));
   } catch (error) {
     console.info("error", error);
@@ -130,10 +127,12 @@ export const addCardToDeck = async (id, card) => {
     const value = await getDecks();
     if (value != null) {
       Object.values(value).find(deck => deck.id === id).questions.push(card)
-      AsyncStorage.setItem('decks', JSON.stringify(value));
+      console.log()
+      await AsyncStorage.setItem('decks', JSON.stringify(value));
+      return true;
     }
   } catch (error) {
-    return null;
+    return false;
   }
 }
 
