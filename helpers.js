@@ -201,7 +201,7 @@ export function setLocalNotification() {
 
 function sendNotification() {
   let today = new Date()
-  today.setDate(today.getDate())
+  today.setDate(today.getDate() + 1)
   today.setHours(18)
   today.setMinutes(0)
 

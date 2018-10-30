@@ -6,7 +6,7 @@ import NewDeckView from './NewDeckView';
 import IndividualDeckView from './IndividualDeckView';
 import NewQuestionView from './NewQuestionView';
 import QuizView from './QuizView';
-import * as helpers from './helpers';
+import { setLocalNotification } from './helpers';
 
 const Tabs = createBottomTabNavigator({
   DeckList: {
@@ -53,7 +53,11 @@ const AppStackNavigator = createStackNavigator({
 export default class App extends Component {
 
   componentDidMount() {
-    helpers.setLocalNotification();
+    Font.loadAsync({
+      Roboto: require("native-base/Fonts/Roboto.ttf"),
+      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
+    });
+    setLocalNotification();
   }
 
   render() {
