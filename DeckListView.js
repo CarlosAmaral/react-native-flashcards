@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import { Container, Content, Header, Left, Right, Card, CardItem, Text, Title, Button, Body } from 'native-base';
 import { Col, Row, Grid } from "react-native-easy-grid";
-import * as helpers from './helpers';
+import {getDecks} from './helpers';
 import { DeviceEventEmitter } from 'react-native';
 
 export default class DeckListView extends Component {
@@ -14,13 +14,12 @@ export default class DeckListView extends Component {
       decks: [],
       animation: false,
     };
-
   }
   /**
    * Fetch All Decks
    */
   _fetchDecks = async () => {
-    let result = await helpers.getDecks();
+    let result = await getDecks();
     if (result != null) {
       result = Object.values(result);
       this.setState({ decks: result });

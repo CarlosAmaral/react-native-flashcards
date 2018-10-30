@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, DeviceEventEmitter } from 'react-native';
 import { Container, Card, CardItem, Content, Button, Text } from 'native-base';
-import * as helpers from './helpers';
+import {getDeck, isEmpty} from './helpers';
 
 export default class IndividualDeckView extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -18,7 +18,7 @@ export default class IndividualDeckView extends Component {
 
   _fetchDeck = async() => {
     const { navigation } = this.props;
-    const deck = await helpers.getDeck(navigation.getParam('id'))
+    const deck = await getDeck(navigation.getParam('id'))
 
     if (deck != {}) {
       return this.setState({ deck })
@@ -27,7 +27,6 @@ export default class IndividualDeckView extends Component {
 
   componentDidMount() {
     DeviceEventEmitter.addListener("cardAdded", (e) => {
-      console.log("CARD UPDATED")
       return this._fetchDeck();
     })
     return this._fetchDeck();
@@ -39,7 +38,7 @@ export default class IndividualDeckView extends Component {
     const { navigate } = this.props.navigation;
     return (
       <Container>
-        {helpers.isEmpty(deck) ? (
+        {isEmpty(deck) ? (
           <Text>Loading</Text>
         ) : (
             <Content contentContainerStyle={styles.container}>
@@ -58,7 +57,7 @@ export default class IndividualDeckView extends Component {
               <Button style={styles.buttonStyle} onPress={() => navigate('NewQuestion', { id: deck.id })}>
                 <Text>Add Card</Text>
               </Button>
-              <Button style={styles.buttonStyle} success onPress={() => navigate('Quiz', { id: deck.id })}>>
+              <Button style={styles.buttonStyle} success onPress={() => navigate('Quiz', { id: deck.id })}>
                   <Text>Start Quiz</Text>
                 </Button> 
             </Content>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, DeviceEventEmitter } from 'react-native';
 import { Container, Header, Content, Form, Item, Input, Body, Toast, Text, Title, H1, H2, H3, Button } from 'native-base';
-import * as helpers from './helpers';
+import {getDeck, addQuizAnswerToUserCollection} from './helpers';
 
 export default class QuizView extends Component {
   constructor(props) {
@@ -19,7 +19,7 @@ export default class QuizView extends Component {
   _fetchQuestions = async () => {
     const { navigation } = this.props;
     const deckId = navigation.getParam('id');
-    const payload = await helpers.getDeck(deckId);
+    const payload = await getDeck(deckId);
 
     if (payload) {
       const questions = payload.questions;
@@ -49,7 +49,7 @@ export default class QuizView extends Component {
         correct: correctQuestionsCounter,
         timestamp: new Date()
       }
-      helpers.addQuizAnswerToUserCollection(payload)
+      addQuizAnswerToUserCollection(payload)
       return this.setState({ endOfQuiz: true });
     }
   }
@@ -103,7 +103,7 @@ export default class QuizView extends Component {
                   <Body style={styles.container}>
                     <H3>Congratulations, the quiz has ended!</H3>
 
-                    <Title>Correct answers: {correctQuestionsCounter}</Title>
+                    <Title style={styles.textColor}>Correct answers: {correctQuestionsCounter}</Title>
 
                     <Button success style={styles.buttonStyle} onPress={() => this.restartQuiz()}>
                       <Text>Restart Quiz</Text>
