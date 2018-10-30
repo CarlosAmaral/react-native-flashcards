@@ -157,7 +157,7 @@ export const addQuizAnswerToUserCollection = async (payload) => {
 
 function clearLocalNotifications() {
   return AsyncStorage.removeItem('quizNotification')
-    .then(Notification.cancelAllScheduledNotificationsAsync())
+    .then(Notifications.cancelAllScheduledNotificationsAsync())
 }
 
 function createNotification() {
